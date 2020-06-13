@@ -15,15 +15,23 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
-import Title from "../../constants/Styles/title";
-import CustomText from "../../constants/Styles/text";
-import { AppLoading } from "expo";
-import { useFonts } from "@use-expo/font";
-import CustomButton from "../../components/button/buttonCustom";
+import Title from "../constants/Styles/title";
+import CustomText from "../constants/Styles/text";
+import CustomButton from "../components/button/buttonCustom";
+
+import { StackScreenProps } from "@react-navigation/stack";
+
+type RootStackParamList = {
+  Home: undefined;
+  Profile: { userId: string };
+  Feed: { sort: "latest" | "top" } | undefined;
+};
+
+type Props = StackScreenProps<RootStackParamList, "Profile">;
 
 var screenWidth = Dimensions.get("window").width;
 
-export default function LogInPage() {
+export default function LogInPage({ navigation }) {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,9 +42,9 @@ export default function LogInPage() {
     username: String;
     password: String;
   }
-  function handleSubmit(username, password) {
+  function handleSubmit(username: String, password: String) {
     if (username === "iripoli" && password === "julian") {
-      alert("Todo piola");
+      navigation.navigate("Profile");
     } else alert("Vola de aca wacho");
   }
 
@@ -47,10 +55,7 @@ export default function LogInPage() {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView style={styles.input} showsVerticalScrollIndicator={false}>
-          <Image
-            source={require("../../assets/logo.png")}
-            style={styles.logo}
-          />
+          <Image source={require("../assets/logo.png")} style={styles.logo} />
           <Title
             text={"¡Hola! para continuar, inicia sesión o crea una cuenta"}
             styleProps={styles.title}
@@ -73,7 +78,7 @@ export default function LogInPage() {
               style={styles.hidePasswordButton}
             >
               <Image
-                source={require("../../assets/ojo.png")}
+                source={require("../assets/ojo.png")}
                 style={
                   !hidePassword
                     ? { opacity: 0.5, height: 35, width: 35 }
@@ -93,6 +98,7 @@ export default function LogInPage() {
               handleTouch={() => handleSubmit(userEmail, userPassword)}
             />
             <CustomButton
+              handleTouch={() => navigation.push("Log-in")}
               label={"Registrarse"}
               buttonStyle={styles.buttonSignin}
               textStyle={styles.buttonText}
