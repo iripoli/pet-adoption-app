@@ -8,6 +8,7 @@ import {
   StyleProp,
   ViewStyle,
   TextStyle,
+  GestureResponderEvent,
 } from "react-native";
 import CustomText from "../constants/Styles/text";
 
@@ -16,6 +17,7 @@ interface Props {
   sectionIconDirectory: ImageSourcePropType;
   buttonStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  handleOnPress?: any;
 }
 
 const ProfileSection = ({
@@ -23,9 +25,13 @@ const ProfileSection = ({
   sectionIconDirectory,
   buttonStyle,
   textStyle,
+  handleOnPress,
 }: Props) => {
   return (
-    <TouchableOpacity style={[styles.container, buttonStyle]}>
+    <TouchableOpacity
+      style={[styles.container, buttonStyle]}
+      onPress={() => handleOnPress()}
+    >
       <Image source={sectionIconDirectory} style={styles.categoryIcon} />
       <CustomText
         text={sectionName}

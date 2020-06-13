@@ -19,32 +19,16 @@ import Title from "../constants/Styles/title";
 import CustomText from "../constants/Styles/text";
 import CustomButton from "../components/button/buttonCustom";
 
-import { StackScreenProps } from "@react-navigation/stack";
-
-type RootStackParamList = {
-  Home: undefined;
-  Profile: { userId: string };
-  Feed: { sort: "latest" | "top" } | undefined;
-};
-
-type Props = StackScreenProps<RootStackParamList, "Profile">;
-
 var screenWidth = Dimensions.get("window").width;
 
 export default function LogInPage({ navigation }) {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
-  const [isKeyboardUp, setKeyBoardUp] = useState(false);
 
-  interface UserCredentials {
-    username: String;
-    password: String;
-  }
   function handleSubmit(username: String, password: String) {
-    if (username === "iripoli" && password === "julian") {
-      navigation.navigate("Profile");
+    if (username.toLowerCase() === "" && password === "") {
+      navigation.navigate("Map");
     } else alert("Vola de aca wacho");
   }
 
