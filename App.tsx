@@ -8,35 +8,12 @@ import ProfilePage from "./containers/profile";
 import MapPage from "./containers/map";
 import NavBar from "./containers/navbar";
 import AnimalAdoptList from "./containers/animalAdopList";
-
-const Stack = createStackNavigator();
+import { createAppContainer } from "react-navigation";
+import AppNavigator from "./navigation/appNavigation";
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Log-in"
-          component={LogInPage}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Profile"
-          component={ProfilePage}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Animals"
-          component={AnimalAdoptList}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Map" component={MapPage} />
-        <Stack.Screen name="NavBar" component={NavBar} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  return <AppNavigator />;
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

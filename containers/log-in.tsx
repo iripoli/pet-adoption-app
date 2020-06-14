@@ -18,17 +18,22 @@ import {
 import Title from "../constants/Styles/title";
 import CustomText from "../constants/Styles/text";
 import CustomButton from "../components/button/buttonCustom";
+import { NavigationStackProp } from "react-navigation-stack";
 
 var screenWidth = Dimensions.get("window").width;
 
-export default function LogInPage({ navigation }) {
+interface Props {
+  navigation: NavigationStackProp;
+}
+
+export default function LogInPage({ navigation }: Props) {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
 
   function handleSubmit(username: String, password: String) {
     if (username.toLowerCase() === "" && password === "") {
-      navigation.navigate("Map");
+      navigation.navigate({ routeName: "App" });
     } else alert("Vola de aca wacho");
   }
 

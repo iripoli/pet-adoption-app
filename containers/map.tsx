@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
-import NavBar from "./navbar";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
-import { LocationRegion } from "expo-location";
 
 interface Map {
-  location: LocationRegion;
+  location: any;
 }
 
 const MapPage = () => {
@@ -24,16 +22,16 @@ const MapPage = () => {
       setLocation(location);
     })();
   }, []);
-  console.log(location);
-  let text = "Waiting..";
+
+  let text = "Loading...";
   if (!location) {
     return (
-      <View style={{ flex: 1, justifyContent: "flex-end" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>{text}</Text>
-        <NavBar />
       </View>
     );
   } else console.log(location);
+
   return (
     <View style={{ flex: 1, justifyContent: "flex-end" }}>
       <MapView
@@ -46,7 +44,6 @@ const MapPage = () => {
         }}
         showsUserLocation={true}
       />
-      <NavBar />
     </View>
   );
 };

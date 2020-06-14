@@ -1,12 +1,15 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import ProfileSection from "../components/profileSection";
-import NavBar from "./navbar";
-import { useNavigation } from "@react-navigation/native";
+import { withNavigation } from "react-navigation";
+import { NavigationStackProp } from "react-navigation-stack";
+import { NavigationTabProp } from "react-navigation-tabs";
 
-function ProfilePage({ navigation }) {
-  const navigations = useNavigation();
+interface Props {
+  navigation: NavigationStackProp;
+}
 
+function ProfilePage({ navigation }: Props) {
   return (
     <>
       <View style={styles.container}>
@@ -43,14 +46,13 @@ function ProfilePage({ navigation }) {
           textStyle={{ color: "#fa9c93" }}
           sectionName={"Cerrar Sesión"}
           sectionIconDirectory={require("../assets/salir.png")}
-          handleOnPress={() => navigation.navigate("Log-in")}
+          handleOnPress={() => navigation.navigate("Login")}
         />
       </View>
-      <NavBar navigation={navigation} />
     </>
   );
 }
-export default ProfilePage;
+export default withNavigation(ProfilePage);
 
 const styles = StyleSheet.create({
   container: {
