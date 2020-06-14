@@ -8,7 +8,7 @@ interface Map {
 }
 
 const MapPage = () => {
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
