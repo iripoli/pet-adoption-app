@@ -6,7 +6,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import LogInPage from "./containers/log-in";
 import ProfilePage from "./containers/profile";
 import MapPage from "./containers/map";
-import NavBar from "./containers/navbar";
 import AnimalAdoptList from "./containers/animalAdopList";
 import { createAppContainer } from "react-navigation";
 import AppNavigator from "./navigation/appNavigation";
