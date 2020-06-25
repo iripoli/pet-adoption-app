@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Image } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import React, { useEffect, useState, useCallback } from "react";
+import { View, Text, Image, ActivityIndicator, StyleSheet } from "react-native";
+import MapView, { Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
 import { ANIMAL_DATA } from "../constants/data";
+import Colors from "../constants/Styles/colors";
+import MapPopUp from "../components/mapPopUp";
+import fetchAnimals from "../redux/animals/getAnimals";
+import { useDispatch, useSelector, connect } from "react-redux";
+import { requestAnimals } from "../redux/animals/animals.actions";
+import { FETCHING_ANIMALS_PENDING } from "../redux/actionsTypes";
 
 interface Map {
-  location: any;
+  location: Location.LocationData;
 }
 
 const MapPage = () => {
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState("");
+  const dispatch = useDispatch();
+  const animals = useSelector((state) => state.animalReducer);
 
   useEffect(() => {
     (async () => {
@@ -18,21 +26,20 @@ const MapPage = () => {
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
       }
-
       let location = await Location.getCurrentPositionAsync({});
+      await dispatch(requestAnimals());
       setLocation(location);
     })();
   }, []);
 
-  let text = "Loading...";
-  if (!location) {
+  if (!location || animals.pending) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>{text}</Text>
+        <ActivityIndicator size="large" color={Colors.ocean} />
       </View>
     );
   } else;
-
+  console.log("Esto es despues " + animals);
   return (
     <View style={{ flex: 1, justifyContent: "flex-end" }}>
       <MapView
@@ -45,7 +52,7 @@ const MapPage = () => {
         }}
         showsUserLocation={true}
       >
-        {ANIMAL_DATA.map((animal) => {
+        {animals.animals.map((animal) => {
           if (animal.species === "perro")
             return (
               <Marker
@@ -59,6 +66,9 @@ const MapPage = () => {
                   source={require("../assets/dog-marker.png")}
                   style={{ height: 40, width: 40 }}
                 />
+                <Callout>
+                  <MapPopUp animal={animal} />
+                </Callout>
               </Marker>
             );
           else if (animal.species === "gato") {
@@ -74,6 +84,9 @@ const MapPage = () => {
                   source={require("../assets/cat-marker2.png")}
                   style={{ height: 40, width: 40 }}
                 />
+                <Callout>
+                  <MapPopUp animal={animal} />
+                </Callout>
               </Marker>
             );
           } else if ((animal.species = "ave")) {
@@ -89,6 +102,9 @@ const MapPage = () => {
                   source={require("../assets/bird-marker2.png")}
                   style={{ height: 40, width: 40 }}
                 />
+                <Callout>
+                  <MapPopUp animal={animal} />
+                </Callout>
               </Marker>
             );
           }
@@ -99,3 +115,17 @@ const MapPage = () => {
 };
 
 export default MapPage;
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignSelf: "flex-start",
+    borderRadius: 6,
+    padding: 15,
+    width: 150,
+  },
+  name: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+});

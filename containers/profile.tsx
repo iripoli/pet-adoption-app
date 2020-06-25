@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 import ProfileSection from "../components/profileSection";
 import { withNavigation } from "react-navigation";
 import { NavigationStackProp } from "react-navigation-stack";
-import { NavigationTabProp } from "react-navigation-tabs";
+import { removeTokenInStorage } from "../services/http-common";
 
 interface Props {
   navigation: NavigationStackProp;
@@ -46,7 +46,7 @@ function ProfilePage({ navigation }: Props) {
           textStyle={{ color: "#fa9c93" }}
           sectionName={"Cerrar Sesión"}
           sectionIconDirectory={require("../assets/salir.png")}
-          handleOnPress={() => navigation.navigate("Login")}
+          handleOnPress={() => removeTokenInStorage(navigation)}
         />
       </View>
     </>

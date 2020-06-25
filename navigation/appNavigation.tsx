@@ -7,6 +7,7 @@ import AnimalAdoptList from "../containers/animalAdopList";
 import ProfilePage from "../containers/profile";
 import React from "react";
 import { Image, StyleSheet } from "react-native";
+import SplashScreen from "../containers/splash";
 
 const AuthStack = createStackNavigator({
   LogIn: {
@@ -163,7 +164,17 @@ const AppModalStack = createStackNavigator(
   }
 );
 
+const SplashStack = createStackNavigator({
+  Splash: {
+    screen: SplashScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+});
+
 const AppNavigator = createSwitchNavigator({
+  Splash: SplashStack,
   Login: AuthStack,
   App: AppModalStack,
 });

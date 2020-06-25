@@ -14,27 +14,63 @@ import {
   ScrollView,
   Button,
   TouchableOpacity,
+  AsyncStorage,
 } from "react-native";
+import axios from "axios";
 import Title from "../constants/Styles/title";
 import CustomText from "../constants/Styles/text";
-import CustomButton from "../components/button/buttonCustom";
+import CustomButton from "../components/buttonCustom";
 import { NavigationStackProp } from "react-navigation-stack";
+import APIKit, {
+  setClientToken,
+  saveTokenInStorage,
+} from "../services/http-common";
+import { useDispatch, useSelector } from "react-redux";
 
 var screenWidth = Dimensions.get("window").width;
 
 interface Props {
   navigation: NavigationStackProp;
 }
+interface login {
+  username: String;
+  password: String;
+  data: any;
+  error: any;
+}
 
 export default function LogInPage({ navigation }: Props) {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const [hidePassword, setHidePassword] = useState(true);
+  const [errors, setErrorsMessage] = useState("");
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(username: String, password: String) {
-    if (username.toLowerCase() === "" && password === "") {
+  const hidden = useSelector((state) => state.authScreen.hiddenPass);
+  const dispatch = useDispatch();
+
+  async function onPressLogin(username: login, password: login) {
+    setIsLoading(true);
+    const payload = { email: username, password: password };
+
+    const onSuccess = async ({ data }: login) => {
+      console.log(data);
+      // Set JSON Web Token on success
+      setClientToken(data.token);
+      setIsLoading(false);
+      setIsAuthorized(true);
+      await saveTokenInStorage(data.token);
+      AsyncStorage.getItem("token").then((res) => console.log(res));
       navigation.navigate({ routeName: "App" });
-    } else alert("Vola de aca wacho");
+    };
+
+    const onFailure = ({ error }: login) => {
+      console.log(error && error.response);
+      setIsLoading(false);
+      setIsAuthorized(false);
+    };
+    APIKit.post("/auth/login", payload).then(onSuccess).catch(onFailure);
+    console.log(isAuthorized);
   }
 
   return (
@@ -58,18 +94,18 @@ export default function LogInPage({ navigation }: Props) {
             style={styles.input}
             placeholder="Contraseña"
             textContentType="password"
-            secureTextEntry={hidePassword ? true : false}
+            secureTextEntry={hidden ? true : false}
             onChangeText={(text) => setUserPassword(text)}
           ></TextInput>
           <View style={{ alignItems: "flex-end", marginBottom: 30 }}>
             <TouchableOpacity
-              onPress={() => setHidePassword(hidePassword ? false : true)}
+              onPress={() => dispatch({ type: "TOOGLE_HIDDEN_PASS" })}
               style={styles.hidePasswordButton}
             >
               <Image
                 source={require("../assets/ojo.png")}
                 style={
-                  !hidePassword
+                  !hidden
                     ? { opacity: 0.5, height: 35, width: 35 }
                     : { opacity: 1, height: 35, width: 35 }
                 }
@@ -84,7 +120,7 @@ export default function LogInPage({ navigation }: Props) {
               label={"Ingresar"}
               buttonStyle={styles.buttonLogIn}
               textStyle={styles.buttonText}
-              handleTouch={() => handleSubmit(userEmail, userPassword)}
+              handleTouch={() => onPressLogin(userEmail, userPassword)}
             />
             <CustomButton
               handleTouch={() => navigation.push("Log-in")}

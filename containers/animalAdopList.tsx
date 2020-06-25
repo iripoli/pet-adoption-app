@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Alert, Image } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Alert,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import SearchField from "../components/searchField";
 import { ANIMAL_DATA } from "../constants/data";
 import { getDistance } from "geolib";
@@ -7,10 +14,13 @@ import * as Location from "expo-location";
 import AnimalList from "../components/animalsList";
 import capitalizeFirstLetter from "../utils/capitalizeFirstLetter";
 import { ScrollView } from "react-native-gesture-handler";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import { useSelector } from "react-redux";
 
 const AnimalAdoptList = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const animals = useSelector((state) => state.animalReducer);
 
   async function getAllDistance(long: string, lat: string) {
     console.log("Este es el parametro coords " + long + " " + lat);
@@ -42,17 +52,14 @@ const AnimalAdoptList = () => {
     })();
   }, []);
 
-  let text = "Loading...";
-  if (!currentLocation) {
+  if (!currentLocation || !animals) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>{text}</Text>
+        <ActivityIndicator size="large" color={Colors.ocean} />
       </View>
     );
   } else {
     const getAllDistance = (long, lat) => {
-      console.log("Este es el parametro coords " + long + " " + lat);
-      console.log("Esta es mi ubicacion" + currentLocation);
       const distance = getDistance(
         {
           latitude: currentLocation.latitude,
@@ -70,19 +77,24 @@ const AnimalAdoptList = () => {
     return (
       <View style={{ alignItems: "center", flex: 1 }}>
         <SearchField />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {ANIMAL_DATA.map((animal) => (
-            <AnimalList
-              key={animal.name}
-              animalPicture={animal.imageUrl}
-              animalName={animal.name}
-              city={capitalizeFirstLetter(animal.city)}
-              distance={getAllDistance(
-                animal.location.longitude,
-                animal.location.latitude
-              )}
-            />
-          )).sort((a, b) => a.distance + b.distance)}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.scrollView}
+        >
+          {animals.animals
+            .map((animal) => (
+              <AnimalList
+                key={animal.name}
+                animalPicture={animal.imageUrl}
+                animalName={animal.name}
+                city={capitalizeFirstLetter(animal.city)}
+                distance={getAllDistance(
+                  animal.location.longitude,
+                  animal.location.latitude
+                )}
+              />
+            ))
+            .sort((a, b) => (a[0] > b[0] && 1) || (a[0] === b[0] ? 0 : -1))}
         </ScrollView>
       </View>
     );
@@ -91,4 +103,8 @@ const AnimalAdoptList = () => {
 
 export default AnimalAdoptList;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  scrollView: {
+    marginTop: 10,
+  },
+});
