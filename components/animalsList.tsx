@@ -1,7 +1,13 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  GestureResponderEvent,
+} from "react-native";
 import Colors from "../constants/Styles/colors";
-import { CustomFonts } from "../constants/Styles/fonts";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface Props {
@@ -9,11 +15,18 @@ interface Props {
   animalName: String;
   city: String;
   distance?: number;
+  handlePress: Function;
 }
 
-const AnimalList = ({ animalPicture, animalName, city, distance }: Props) => {
+const AnimalList = ({
+  animalPicture,
+  animalName,
+  city,
+  distance,
+  handlePress,
+}: Props) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={handlePress}>
       <Image source={{ uri: animalPicture }} style={styles.image} />
       <View style={styles.footer}>
         <Text style={styles.name}>{animalName.toUpperCase()}</Text>

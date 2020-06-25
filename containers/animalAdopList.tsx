@@ -17,7 +17,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { useSelector } from "react-redux";
 
-const AnimalAdoptList = () => {
+const AnimalAdoptList = ({ navigation }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const animals = useSelector((state) => state.animalReducer);
@@ -84,7 +84,10 @@ const AnimalAdoptList = () => {
           {animals.animals
             .map((animal) => (
               <AnimalList
-                key={animal.name}
+                key={animal.id}
+                handlePress={() =>
+                  navigation.navigate("Details", { animal: animal })
+                }
                 animalPicture={animal.imageUrl}
                 animalName={animal.name}
                 city={capitalizeFirstLetter(animal.city)}

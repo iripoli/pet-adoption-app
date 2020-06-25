@@ -8,6 +8,7 @@ import ProfilePage from "../containers/profile";
 import React from "react";
 import { Image, StyleSheet } from "react-native";
 import SplashScreen from "../containers/splash";
+import AnimalProfile from "../containers/animalProfile";
 
 const AuthStack = createStackNavigator({
   LogIn: {
@@ -49,7 +50,7 @@ const AnimalAdoptListStack = createStackNavigator({
     },
   },
   Details: {
-    screen: AnimalAdoptList,
+    screen: AnimalProfile,
   },
 });
 

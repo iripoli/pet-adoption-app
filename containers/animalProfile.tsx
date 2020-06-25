@@ -1,13 +1,18 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 
-const AnimalProfile = () => {
+var screenWidth = Dimensions.get("window").width;
+var screenHeigth = Dimensions.get("window").height;
+
+const AnimalProfile = ({ navigation }) => {
+  const animalData = navigation.getParam("animal");
+  console.log(animalData);
   return (
     <View>
-      <Image />
+      <Image source={{ uri: animalData.imageUrl }} style={styles.profilePic} />
       <View>
-        <Image source={} />
-        <Text></Text>
+        <Image />
+        <Text>{animalData.name}</Text>
         <Image />
         <Image source={require("../assets/compartir.png")} />
         <View>
@@ -20,3 +25,9 @@ const AnimalProfile = () => {
   );
 };
 export default AnimalProfile;
+const styles = StyleSheet.create({
+  profilePic: {
+    height: screenHeigth * 0.35,
+    width: screenWidth,
+  },
+});
