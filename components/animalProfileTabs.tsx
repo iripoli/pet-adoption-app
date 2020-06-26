@@ -67,7 +67,7 @@ export const AnimalProfileDatos = ({ animalData }: animalData) => {
           <Text style={stylesData.data}>{animalData.weight}</Text>
         </View>
         <View style={stylesData.personalityContainer}>
-          <Text>Personalidad</Text>
+          <Text style={stylesData.title}>Personalidad</Text>
           <View style={stylesData.persItemContainer}>
             {animalData.personality.map((item) => (
               <Text key={item} style={stylesData.persItem}>
@@ -80,7 +80,7 @@ export const AnimalProfileDatos = ({ animalData }: animalData) => {
           <Text style={stylesData.title}>Historia</Text>
           <Text>{animalData.history}</Text>
         </View>
-        <View style={{ marginBottom: 200 }}>
+        <View style={stylesData.buttonContainer}>
           <CustomButton
             label={"Adoptar"}
             buttonStyle={stylesData.button}
@@ -134,11 +134,10 @@ const stylesData = StyleSheet.create({
   persItemContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginTop: 20,
   },
   persItem: {
     margin: 8,
-    height: 25,
+    height: 27,
     backgroundColor: Colors.ocean2,
     color: "white",
     fontSize: 12,
@@ -151,13 +150,18 @@ const stylesData = StyleSheet.create({
   historyContainer: {
     height: 110,
     padding: 10,
-    width: screenWidth * 0.9,
+    width: screenWidth * 0.95,
     borderColor: Colors.cloudyBlue,
     borderRadius: 4,
     borderWidth: 1,
   },
   title: {
     marginBottom: 15,
+    color: Colors.ocean,
+    fontSize: 16,
+  },
+  buttonContainer: {
+    marginBottom: 170,
   },
   button: {
     marginTop: 32,
