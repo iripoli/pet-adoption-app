@@ -15,7 +15,7 @@ interface Props {
   animalName: String;
   city: String;
   distance?: number;
-  handlePress: Function;
+  handlePress: any;
 }
 
 const AnimalList = ({

@@ -51,6 +51,10 @@ const AnimalAdoptListStack = createStackNavigator({
   },
   Details: {
     screen: AnimalProfile,
+    navigationOptions: {
+      headerTransparent: true,
+      title: "",
+    },
   },
 });
 

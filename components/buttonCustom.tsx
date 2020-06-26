@@ -27,7 +27,7 @@ const CustomButton = ({
       style={[styles.button, buttonStyle]}
       onPress={handleTouch}
     >
-      <Text style={[buttonStyle, textStyle]}>{label}</Text>
+      <Text style={[textStyle]}>{label}</Text>
     </TouchableOpacity>
   );
 };

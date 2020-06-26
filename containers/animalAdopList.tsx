@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import SearchField from "../components/searchField";
-import { ANIMAL_DATA } from "../constants/data";
 import { getDistance } from "geolib";
 import * as Location from "expo-location";
 import AnimalList from "../components/animalsList";
